@@ -3,11 +3,11 @@
 #
 
 # Default directory to save the downloaded torrents.
-directory = <%= "/home/#{node[:rtorrent][:user]}" %>/downloads
+directory = <%= "/home/#{@node[:rtorrent][:user]}" %>/downloads
 
 # Default session directory.
 # Make sure you don't run multiple instance of rtorrent using the same session directory.
-session = <%= "/home/#{node[:rtorrent][:user]}" %>/.session
+session = <%= "/home/#{@node[:rtorrent][:user]}" %>/.session
 
 # Encryption options, set to none (default) or any combination of the following:
 # allow_incoming, try_outgoing, require, require_RC4, enable_retry, prefer_plaintext
@@ -16,7 +16,7 @@ session = <%= "/home/#{node[:rtorrent][:user]}" %>/.session
 # outgoing connections but retries with encryption if they fail, preferring
 # plaintext to RC4 encryption after the encrypted handshake
 #
-encryption = <%= node[:rtorrent][:encryption] %>
+encryption = <%= @node[:rtorrent][:encryption] %>
 
 # Stop torrents when
 # reaching upload ratio in percent,
@@ -61,9 +61,7 @@ max_peers_seed = <%= @node[:rtorrent][:max_peers_seed] %>
 # The ip address reported to the tracker.
 ip = <%= @node[:rtorrent][:ipaddress] %>
 
-# The ip address the listening socket and outgoing connections is bound to.
-#bind = 127.0.0.1
-# scgi_port = 127.0.0.1:50<%= @node[:rtorrent][:index] %>
+# The socket to communicate over XMLRPC-C
 scgi_local = <%= "/home/#{node[:rtorrent][:user]}" %>/.session/rtorrent.socket
 schedule = chmod,0,0,"execute=chmod,777,<%= "/home/#{node[:rtorrent][:user]}" %>/.session/rtorrent.socket"
 
@@ -86,20 +84,12 @@ tracker_numwant = <%= node[:rtorrent][:tracker_numwant] %>
 #
 
 # Watch a directory for new torrents, and stop those that have been deleted.
-schedule = watch_directory,5,60,load_start=<%= "/home/#{node[:rtorrent][:user]}" %>/watch/*.torrent
-#schedule = untied_directory,5,60,stop_untied=<%= "/home/#{node[:rtorrent][:user]}" %>/watch/*.torrent
+schedule = watch_directory,5,60,load_start=<%= "/home/#{@node[:rtorrent][:user]}" %>/watch/*.torrent
+schedule = untied_directory,5,60,stop_untied=<%= "/home/#{@node[:rtorrent][:user]}" %>/watch/*.torrent
+
+<% if @node[:rtorrent][:btsync] and @node[:rtorrent][:btsync_dir] %>
+schedule = watch_directory,5,60,"load_start=<%= "/home/#{@node[:rtorrent][:user]}" %>/<%= @node[:rtorrent][:btsync_dir] %>/*.torrent,d.set_directory=<%= "/home/#{@node[:rtorrent][:user]}" %>/downloads/Sync"
+<% end %>
 
 # Close torrents when diskspace is low.
 schedule = low_diskspace,5,60,close_low_diskspace=1000M
-
-# Alternative calls to bind and ip that should handle dynamic ip's.
-# schedule = ip_tick,0,1800,ip=rakshasa
-# schedule = bind_tick,0,1800,bind=rakshasa
-
-# Example of scheduling commands: Switch between two ip's every 5
-# seconds.
-#schedule = "ip_tick1,5,10,ip=torretta"
-#schedule = "ip_tick2,10,10,ip=lampedusa"
-
-# Remove a scheduled event.
-#schedule_remove = "ip_tick1"
