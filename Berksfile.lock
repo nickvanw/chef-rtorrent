@@ -5,5 +5,5 @@ DEPENDENCIES
 
 GRAPH
   apt (2.7.0)
-  rtorrent (0.1.1)
+  rtorrent (0.1.2)
     apt (>= 0.0.0)

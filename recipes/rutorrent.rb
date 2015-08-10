@@ -58,3 +58,7 @@ template '/etc/nginx/htpasswd' do
   })
   notifies :reload, "service[nginx]", :delayed
 end
+
+template "#{rutorrent_dir}/rutorrent/conf/config.php" do
+  source 'config.php.erb'
+end
