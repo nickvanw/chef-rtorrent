@@ -1,0 +1,16 @@
+server {
+    server_name <%= @node[:rutorrent][:domain] %>;
+    index index.html index.htm index.php;
+    listen 80;
+    error_log <%= "/var/log/nginx/rtorrent-#{@node[:rtorrent][:user]}-err.log" %>;
+    access_log <%= "/var/log/nginx/rtorrent-#{@node[:rtorrent][:user]}-acc.log" %>;
+    root <%= @rutorrent_dir %>;
+    include php.conf;
+    include rutorrent.conf;
+    location /RPC2 {
+        auth_basic "Restricted";
+        auth_basic_user_file htpasswd;
+        include scgi_params;
+        scgi_pass unix:<%= "/home/#{@node[:rtorrent][:user]}" %>/.session/rtorrent.socket;
+    }
+}
