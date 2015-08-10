@@ -12,4 +12,7 @@ suites:
 - name: default
   run_list:
   - recipe[rtorrent::default]
-  attributes: {}
+  attributes:
+    rtorrent:
+      btsync: true
+      btsync_dir: '.sync'
