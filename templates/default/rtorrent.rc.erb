@@ -29,10 +29,7 @@ ratio.max.set = <%= @node[:rtorrent][:ratio_max] %>
 ratio.upload.set = <%= @node[:rtorrent][:ratio_upload] %>
 <% end %>
 
-
-
 ### THROTTLE SETTINGS
-#
 
 # Global upload and download rate. "0" for unlimited.
 upload_rate = <%= @node[:rtorrent][:upload_rate] %>
@@ -47,16 +44,9 @@ min_peers_seed = <%= @node[:rtorrent][:min_peers_seed] %>
 max_peers_seed = <%= @node[:rtorrent][:max_peers_seed] %>
 
 # Maximum number of simultaneous uploads per torrent.
-# max_uploads = <%= @node[:rtorrent][:max_uploads] %>
-
-# Max upload and download slots allowed
-# max_uploads_global = <%= @node[:rtorrent][:max_uploads_global] %>
-# max_downloads_global = <%= @node[:rtorrent][:max_downloads_global] %>
-
-
+max_uploads = <%= @node[:rtorrent][:max_uploads] %>
 
 ### TRACKER RELATED SETTINGS
-#
 
 # The ip address reported to the tracker.
 ip = <%= @node[:rtorrent][:ipaddress] %>

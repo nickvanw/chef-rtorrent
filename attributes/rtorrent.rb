@@ -7,10 +7,11 @@ default[:rtorrent][:ratio_upload] = "200M"
 # Throttling
 default[:rtorrent][:upload_rate]            = 0
 default[:rtorrent][:download_rate]          = 0
-default[:rtorrent][:min_peers]              = 2
-default[:rtorrent][:max_peers]              = 400
-default[:rtorrent][:min_peers_seed]         = 2
-default[:rtorrent][:max_peers_seed]         = 800
+default[:rtorrent][:min_peers]              = 4096
+default[:rtorrent][:max_peers]              = 16384
+default[:rtorrent][:min_peers_seed]         = -1
+default[:rtorrent][:max_peers_seed]         = -1
+default[:rtorrent][:max_uploads]            = 16384
 
 # Tracker
 default[:rtorrent][:port_random]      = "yes"
