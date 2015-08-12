@@ -74,11 +74,11 @@ tracker_numwant = <%= node[:rtorrent][:tracker_numwant] %>
 #
 
 # Watch a directory for new torrents, and stop those that have been deleted.
-schedule = watch_directory,5,60,load_start=<%= "/home/#{@node[:rtorrent][:user]}" %>/watch/*.torrent
-schedule = untied_directory,5,60,stop_untied=<%= "/home/#{@node[:rtorrent][:user]}" %>/watch/*.torrent
+schedule = watch_directory,5,5,load_start=<%= "/home/#{@node[:rtorrent][:user]}" %>/watch/*.torrent
+schedule = untied_directory,5,5,stop_untied=<%= "/home/#{@node[:rtorrent][:user]}" %>/watch/*.torrent
 
 <% if @node[:rtorrent][:btsync] and @node[:rtorrent][:btsync_dir] %>
-schedule = watch_directory,5,60,"load_start=<%= "/home/#{@node[:rtorrent][:user]}" %>/<%= @node[:rtorrent][:btsync_dir] %>/*.torrent,d.set_directory=<%= "/home/#{@node[:rtorrent][:user]}" %>/downloads/Sync"
+schedule = watch_directory_bt,5,5,"load_start=<%= "/home/#{@node[:rtorrent][:user]}" %>/<%= @node[:rtorrent][:btsync_dir] %>/*.torrent,d.set_directory=<%= "/home/#{@node[:rtorrent][:user]}" %>/downloads/Sync"
 <% end %>
 
 # Close torrents when diskspace is low.

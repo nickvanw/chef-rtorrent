@@ -62,3 +62,27 @@ end
 template "#{rutorrent_dir}/rutorrent/conf/config.php" do
   source 'config.php.erb'
 end
+
+if node[:rutorrent][:install_plugins]
+  rutorrent_plugin_packages.each do |p|
+    package p do 
+      action :upgrade
+    end
+  end
+  
+  rutorrent_plugins = "#{node[:rutorrent][:base_url]}/plugins-#{node[:rutorrent][:download_version]}.tar.gz"
+  rutorrent_plugin_file = "#{Chef::Config[:file_cache_path]}/plugins-#{node[:rutorrent][:download_version]}.tar.gz"
+  remote_file rutorrent_plugin_file do
+    source rutorrent_plugins
+    not_if { ::File.exists?(rutorrent_plugin_file) }
+  end
+
+  plugin_dir = "#{rutorrent_dir}/rutorrent"
+  bash 'unpack rutorrent plugins' do
+    cwd ::File.dirname("/home/#{node[:rtorrent][:user]}")
+    code <<-EOH
+      tar xzf #{rutorrent_plugin_file} -C #{plugin_dir}
+    EOH
+    not_if { ::Dir.entries("#{plugin_dir}/plugins").length > 2 }
+  end
+end
